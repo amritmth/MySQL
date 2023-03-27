@@ -1,0 +1,163 @@
+Q1. Display name and commission of all the salesmen. 
+
+SELECT name, commission
+FROM salesman; 
+
+Q2. Retrieve salesman id of all salesmen from orders table without any repeats.
+
+SELECT DISTINCT salesman_id
+FROM orders;
+
+Q3.  Display names and city of salesman, who belongs to the city of Paris. 
+
+SELECT name,city
+FROM salesman
+WHERE city='Paris';
+
+Q4. SELECT name,city
+FROM salesman
+WHERE city='Paris';
+
+SELECT *
+FROM customer
+WHERE grade = 200;
+
+Q5.  Display the order number, order date and the purchase amount for orders which will be delivered by the salesman with ID 5001.
+
+SELECT ord_no, ord_date, purch_amt
+FROM orders
+WHERE salesman_id = 5001;
+
+
+Q6.  Show the winner of the 1971 prize for Literature.
+
+SELECT winner
+FROM nobel_win
+WHERE year = 1971
+AND subject = 'Literature';
+
+
+Q7. Show all the details of the winners with first name Louis. 
+
+SELECT *
+FROM nobel_win
+WHERE winner LIKE 'Louis%';
+
+Q8.  Show all the winners in Physics for 1970 together with the winner of Economics for 1971. 
+
+SELECT *
+FROM nobel_win
+WHERE (subject = 'Physics' AND year = 1970)
+UNION
+(SELECT *
+FROM nobel_win
+WHERE (subject = 'Economics' AND year = 1971)
+);
+
+Q9. Show all the winners of Nobel prize in the year 1970 except the subject Physiology and Economics.
+
+SELECT *
+FROM nobel_win
+WHERE year = 1970
+AND subject NOT IN ('Physiology','Economics');
+
+Q10. Find all the details of the Nobel winners for the subject not started with the letter 'P' and arranged the list as the most recent comes first, then by name in order
+
+SELECT *
+FROM nobel_win
+WHERE subject NOTLIKE 'P%' 
+ORDER BYyear DESC, winner;
+
+Q11. Find the name and price of the cheapest item(s). 
+
+SELECT pro_name, pro_price
+FROM item_mast
+WHERE pro_price = (SELECT MIN(pro_price)
+                   FROM item_mast);
+
+
+Q12. Display all the customers, who are either belongs to the city New York or not had a grade above 100
+
+select *
+From customer
+Where city = ' New York ' Or Not grade > 100;
+
+Q13. Find those salesmen with all information who gets the commission within a range of 0.12 and 0.14.
+
+Method 1st
+
+SELECT salesman_id, name, city, commission
+From salesman
+Where (commission < 0.10 AND commission < 0.12);
+
+Method 2nd
+
+SELECT salesman_id, name, city, commission
+From salesman
+Where commission Between 0.10 AND 0.12;
+
+Q14. Find all those customers with all information whose names are ending with the letter 'n'.
+
+SELECT *
+FROM customer
+WHERE cust_name LIKE '%n' ;
+
+Q15. Find those salesmen with all information whose name containing the 1st character is 'N' and the 4th character is 'l' and rests may be any character.
+
+SELECT *
+FROM salesman
+WHERE name LIKE 'N__l%';
+
+Q16. Find that customer with all information who does not get any grade except NULL
+
+SELECT *
+FROM customer
+WHERE grade IS NULL;
+
+Q17. Find the total purchase amount of all orders.
+
+SELECT SUM (purch_amt) 
+FROM orders;
+
+Q18.  Find the number of salesman currently listing for all of their customers.
+Method 1st
+
+SELECT COUNT(Salesman_Id)
+FROM orders;
+
+Method 2nd
+
+SELECT COUNT (DISTINCT salesman_id)
+FROM orders;
+
+Q19. Find the highest grade for each of the cities of the customers.
+
+SELECT city, MAX(grade)
+FROM customer
+GROUP BY city;
+ 
+ Q20. Find the highest purchase amount ordered by the each customer with their ID and highest purchase amount.
+ 
+SELECT customer_id, MAX(purch_amt)
+FROM orders
+GROUP BY customer_id;
+
+Q21. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
