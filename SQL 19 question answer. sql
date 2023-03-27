@@ -1,0 +1,116 @@
+Q1 - Print product, price, sum of quantity more than 5 sold during all three months
+
+select * from bank_inventory_pricing;
+
+select distinct (Month) from bank_inventory_pricing;
+
+select product, month, min(price) as min_price, sum(Quantity) as Total_Quantity
+from bank_inventory_pricing
+group by product, month
+having total_Quantity > 5;
+
+Q2- Print product, quantity, month and count of records for which estimated_sale_price is less than purchase_cost
+
+select product , quantity, month, count(*) as records
+from bank_inventory_pricing
+where estimated_sale_price < purchase_cost
+group by product , quantity, month;
+
+Q3- Extract the 3rd highest value of column Estimated_sale_price from bank_invertory_pricing
+select * from bank_invertory_pricing
+order by estimated_sale_price desc
+limit 2,1;
+
+
+Q3- Count all duplicate values of column Product from table bank_inventory_pricing
+
+select product, count(*) as count_product
+from bank_inventory_pricing
+group by product
+having count_product>1;
+
+
+Q7 Real Profit = Revenue - cost Find for which products, branch level real profit is more than the estimated_profit in Bank_branch_PL
+select * from Bank_branch_PL; 
+
+select branch, product , revenue-cost as real_profit, estimated_profit
+from bank_branch_PL
+where (revenue-cost) > estimated_profit;
+
+Q8- Find the least calculated profit earned during all 3 periods
+
+select branch , month , min(revenue-Cost) as min_profit
+from Bank_branch_PL
+group by branch, month ;
+
+
+Q9- convert Quantity data type from numeric to character Add then, add zeros before the Quantity field.
+
+select Quantity,  lpad(Quantity,4,0) as quant_char
+from Bank_Inventory_pricing;
+
+Q10 Write a MySQL Query to print first_name,last_name 
+select first_name, last_name
+from employee_details
+where FIRST_NAME like "%u%";
+
+Q11- Reduce 30% of the cost for all the products and print the products whose calculated profit at branch is exceeding estimated_profit
+select *, cost*0.7 as reduced_cost, (cost - cost*0.3) as reduced_cost1,
+(revenue - cost*0.7) as increased_profit
+from Bank_branch_PL
+having increased_profit > estimated_profit;
+
+Q12- Write a MySQL query to print the observations from the 
+# bank_inventory_pricing table excluding the values "BusiCard"
+# And "SuperSave" from the column Product
+
+select * from Bank_Inventory_pricing
+where product Not in ('BusiCard','SuperSave');
+
+Q13- Extract all the columns from Bank_Inventory_pricing where price between 220 and 300
+select * from Bank_Inventory_pricing
+where price between 220 and 300
+order by price;
+
+Q14- Display all the non duplicates fields in the Product form Bank_Inventory_pricing table and display first 5 records
+select product
+from Bank_Inventory_pricing
+group by product limit 5;
+
+Q15- Update price column of Bank_Inventory_pricing with an 
+# increase of 15% when the Quantity is more than 3
+
+set sql_safe_updates=0;
+
+Update Bank_Inventory_pricing
+set price = price * 1.15
+where quantity > 3;
+
+Q16- Show Round off values of the price without displaying decimal scale from Bank_Inventory_pricing
+select *, round(price,1) as price_round
+from Bank_Inventory_pricing;
+
+Q17- Increase the length of Product size by 30 characters from Bank_Inventory_pricing.
+describe bank_inventory_pricing;
+
+alter table bank_inventory_pricing modify product varchar(30);
+
+Q18. Add '100' in column price where quantity is greater than 3 and dsiplay that column as 'new_price'
+ 
+select price, price +'100' as new_price
+from bank_inventory_pricing
+where quantity >3;
+
+Q19. Display all saving account holders have “Add-on Credit Cards" and “Credit cards" 
+select * from
+bank_inventory_details
+where Account_type in ('Add-on Credit Card', 'Credit Card');
+
+
+select * from
+bank_inventory_pricing
+where customer_Id in (select customer_id from
+					bank_inventory_pricing
+                    where Account_type in ('Add-on Credit Card' , 'Credit Card'))
+order by customer_id
+;
