@@ -1,84 +1,81 @@
 Q1. Display name and commission of all the salesmen. 
 
-SELECT name, commission
-FROM salesman; 
+Select name, commission
+From salesman; 
 
 Q2. Retrieve salesman id of all salesmen from orders table without any repeats.
 
-SELECT DISTINCT salesman_id
-FROM orders;
+Select DISTINCT salesman_id
+From orders;
 
 Q3.  Display names and city of salesman, who belongs to the city of Paris. 
 
-SELECT name,city
-FROM salesman
-WHERE city='Paris';
+Select name,city
+From salesman
+Where city='Paris';
 
-Q4. SELECT name,city
-FROM salesman
-WHERE city='Paris';
+Q4. Display all the information for those customers with a grade of 200.
 
-SELECT *
-FROM customer
-WHERE grade = 200;
+Select *
+From customer
+Where grade = 200;
 
 Q5.  Display the order number, order date and the purchase amount for orders which will be delivered by the salesman with ID 5001.
 
-SELECT ord_no, ord_date, purch_amt
-FROM orders
-WHERE salesman_id = 5001;
+Select ord_no, ord_date, purch_amt
+From orders
+Where salesman_id = 5001;
 
 
 Q6.  Show the winner of the 1971 prize for Literature.
 
-SELECT winner
-FROM nobel_win
-WHERE year = 1971
+Select winner
+From nobel_win
+Where year = 1971
 AND subject = 'Literature';
 
 
 Q7. Show all the details of the winners with first name Louis. 
 
-SELECT *
-FROM nobel_win
-WHERE winner LIKE 'Louis%';
+Select *
+From nobel_win
+Where winner LIKE 'Louis%';
 
 Q8.  Show all the winners in Physics for 1970 together with the winner of Economics for 1971. 
 
-SELECT *
-FROM nobel_win
-WHERE (subject = 'Physics' AND year = 1970)
+Select *
+From nobel_win
+Where (subject = 'Physics' AND year = 1970)
 UNION
 (SELECT *
-FROM nobel_win
-WHERE (subject = 'Economics' AND year = 1971)
-);
+From nobel_win
+Where (subject = 'Economics' AND year = 1971);
 
 Q9. Show all the winners of Nobel prize in the year 1970 except the subject Physiology and Economics.
 
-SELECT *
-FROM nobel_win
-WHERE year = 1970
+Select *
+From nobel_win
+Where year = 1970
 AND subject NOT IN ('Physiology','Economics');
 
 Q10. Find all the details of the Nobel winners for the subject not started with the letter 'P' and arranged the list as the most recent comes first, then by name in order
 
-SELECT *
-FROM nobel_win
-WHERE subject NOTLIKE 'P%' 
-ORDER BYyear DESC, winner;
+Select *
+From nobel_win
+Where subject NOTLIKE 'P%'                        
+Order by year DESC, winner;
 
 Q11. Find the name and price of the cheapest item(s). 
 
-SELECT pro_name, pro_price
-FROM item_mast
-WHERE pro_price = (SELECT MIN(pro_price)
+Select pro_name, pro_price
+From item_mast
+Where pro_price = (SELECT MIN(pro_price)
                    FROM item_mast);
 
 
 Q12. Display all the customers, who are either belongs to the city New York or not had a grade above 100
 
-select *
+Select *
 From customer
 Where city = ' New York ' Or Not grade > 100;
 
@@ -86,70 +83,145 @@ Q13. Find those salesmen with all information who gets the commission within a r
 
 Method 1st
 
-SELECT salesman_id, name, city, commission
+Select salesman_id, name, city, commission
 From salesman
 Where (commission < 0.10 AND commission < 0.12);
 
 Method 2nd
 
-SELECT salesman_id, name, city, commission
+Select salesman_id, name, city, commission
 From salesman
 Where commission Between 0.10 AND 0.12;
 
 Q14. Find all those customers with all information whose names are ending with the letter 'n'.
 
-SELECT *
-FROM customer
-WHERE cust_name LIKE '%n' ;
+Select *
+From customer
+Where cust_name LIKE '%n' ;
 
 Q15. Find those salesmen with all information whose name containing the 1st character is 'N' and the 4th character is 'l' and rests may be any character.
 
-SELECT *
-FROM salesman
-WHERE name LIKE 'N__l%';
+Select *
+From salesman
+Where name LIKE 'N__l%';
 
 Q16. Find that customer with all information who does not get any grade except NULL
 
-SELECT *
-FROM customer
-WHERE grade IS NULL;
+Select *
+From customer
+Where grade IS NULL;
 
 Q17. Find the total purchase amount of all orders.
 
-SELECT SUM (purch_amt) 
-FROM orders;
+Select SUM (purch_amt) 
+From orders;
 
 Q18.  Find the number of salesman currently listing for all of their customers.
 Method 1st
 
-SELECT COUNT(Salesman_Id)
-FROM orders;
+Select COUNT(Salesman_Id)
+From orders;
 
 Method 2nd
 
-SELECT COUNT (DISTINCT salesman_id)
-FROM orders;
+Select COUNT (DISTINCT salesman_id)
+From orders;
 
 Q19. Find the highest grade for each of the cities of the customers.
 
-SELECT city, MAX(grade)
-FROM customer
-GROUP BY city;
+Select city, Max(grade)
+From customer
+Group by city;
  
  Q20. Find the highest purchase amount ordered by the each customer with their ID and highest purchase amount.
  
-SELECT customer_id, MAX(purch_amt)
-FROM orders
-GROUP BY customer_id;
+Select customer_id, Max(purch_amt)
+From orders
+Group by customer_id;
 
-Q21. 
+Q21. Find the highest purchase amount ordered by the each customer on a particular date with their ID, order date and highest purchase amount.
 
+Select customer_id, ord_date, MAX(purch_amt) 
+From orders 
+Group by customer_id, ord_date;
 
+Q22. Find the highest purchase amount on a date '2012-08-17' for each salesman with their ID.
 
+Select salesman_id, Max(purch_amt) 
+From orders 
+Where ord_date = '2012-08-17'
+Group by salesman_id;
 
+Q23. Find the highest purchase amount with their customer ID and order date, for only those customers who have the highest purchase amount in a day is more than 2000.
 
+Select customer_id, ord_date, Max(purch_amt)
+From orders
+Group by customer_id, ord_date
+Having Max(purch_amt) > 2000;
 
+Q24. Write a SQL statement that counts all orders for a date August 17th, 2012.
 
+Select COUNT(*)
+From orders
+Where ord_date = '2012-08-17';
+
+Q25. Find the name and city of those customers and salesmen who lives in the same city.
+
+Select C.cust_name S.name S.city
+From salesman as S customer as C
+Where S.city = C.city;
+
+Q26.• Find the names of all customers along with the salesmen who works for them .
+
+Select customer.cust_name salesman.name
+From customer salesman
+Where salesman.salesman_id = customer.salesman_id;
+
+Q27. Display all those orders by the customers not located in the same cities where their salesmen live.
+
+Select ord_no cust_name orders.customer_id orders.salesman_id
+From salesman customer orders
+Where customer.city <> salesman.city
+AND orders.customer_id = customer.customer_id
+AND orders.salesman_id = salesman.salesman;
+
+Q28. Display all the orders issued by the salesman 'Paul Adam' from the orders table.
+
+Select *
+From orders
+Where salesman_id =(SELECT salesman_id
+From salesman 
+Where name = 'Paul;
+
+Q29. Display all the orders which values are greater than the average order value for 10th October 2012.
+
+Select *
+From orders
+Where purch_amt >
+(Select AVG(purch_amt) 
+From orders 
+Where ord_date = '2012-10-10');
+
+Q30. Find all orders attributed to salesmen in Paris.
+
+Select *
+From orders
+Where salesman_id IN
+(Select salesman_id
+From salesman 
+Where city ='Paris');
+
+Q31. Extract the data from the orders table for the salesman who earned the maximum commission.
+
+Select ord_no, purch_amt, ord_date, salesman_id
+From orders 
+Where salesman_id IN (Select salesman_id
+                      From salesman
+                      Where commission = (Select Max(commission)
+                      From salesman);
+                      
+                    
+ Q8
 
 
 
